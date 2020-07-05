@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using AcmeGames.Filters;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +41,8 @@ namespace AcmeGames
                     };
                 });
 
+            aServiceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
+            
             aServiceCollection.AddMediatR(AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.GetName().Name.StartsWith("AcmeGames"))
                 .ToArray());
