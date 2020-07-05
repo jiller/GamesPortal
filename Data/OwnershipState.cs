@@ -1,4 +1,4 @@
-namespace AcmeGames.Models
+namespace AcmeGames.Data
 {
 	public enum OwnershipState
 	{

@@ -2,7 +2,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
+using AcmeGames.Domain.Users.Requests;
 using AcmeGames.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -11,38 +14,42 @@ namespace AcmeGames.Controllers
 {
     [Produces("application/json")]
     [Route("api/login")]
-    public class LoginController : Controller
+    public class LoginController: Controller
     {
-        private readonly SigningCredentials     mySigningCredentials;
+        private readonly IMediator mediator;
+        private readonly SigningCredentials mySigningCredentials;
 
-        public LoginController(
-            IConfiguration          aConfiguration)
+        public LoginController(IConfiguration configuration, IMediator mediator)
         {
-            if (aConfiguration == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(aConfiguration));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(aConfiguration["JWTKey"]));
+            this.mediator = mediator;
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTKey"]));
             mySigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         }
 
         [HttpPost]
-        public IActionResult
-        Authenticate(
-            [FromBody] AuthRequest  aAuthRequest)
+        public async Task<IActionResult> Authenticate([FromBody] AuthRequest  authRequest)
         {
-            // Implement: Retrieve a user account from the database and handle invalid login attempts
-            var user = new User
+            if (ModelState.IsValid)
             {
-                UserAccountId = "fake",
-                DateOfBirth = DateTime.Now,
-                EmailAddress = "foo@bar.baz",
-                FirstName = "Hard",
-                LastName = "Codedson",
-                IsAdmin = false,
-                Password = "password"
-            };
+                return BadRequest(ModelState);
+            }
+            
+            var user = await mediator.Send(new GetUserByEmailAndPasswordRequest
+            {
+                Email = authRequest.EmailAddress,
+                Password = authRequest.Password
+            });
+
+            if (user == null)
+            {
+                return BadRequest("Invalid email address or password.");
+            }
 
             var claims = new[]
             {
