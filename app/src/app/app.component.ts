@@ -11,7 +11,6 @@ import { User } from "./model/user";
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-
   userAuthorized: boolean;
   currentUser: User;
 
@@ -19,13 +18,15 @@ export class AppComponent {
               private userService: UserService,
               private router: Router) {
 
+    this.userService.currentUser
+      .subscribe(user => this.currentUser = user);
+
     this.authService.authData
       .subscribe(auth => {
         this.userAuthorized = !!auth;
 
         if (this.userAuthorized) {
-          this.userService.load()
-            .subscribe(user => this.currentUser = user);
+          this.userService.load().subscribe(user => true);
         }
       });
   }
@@ -33,9 +34,5 @@ export class AppComponent {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
-  }
-
-  getUserDisplayName() {
-    return this.currentUser.firstName + ' ' + this.currentUser.lastName;
   }
 }

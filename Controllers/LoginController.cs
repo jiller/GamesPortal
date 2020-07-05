@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using NSwag.Annotations;
 
 namespace AcmeGames.Controllers
 {
@@ -34,6 +35,7 @@ namespace AcmeGames.Controllers
         }
 
         [HttpPost]
+        [SwaggerResponse(typeof(TokenResponse))]
         public async Task<IActionResult> Authenticate([FromBody] AuthRequest  authRequest)
         {
             if (!ModelState.IsValid)
@@ -70,9 +72,10 @@ namespace AcmeGames.Controllers
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: mySigningCredentials);
 
-            return Ok(new
+            return Ok(new TokenResponse
             {
-                token = new JwtSecurityTokenHandler().WriteToken(token)
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expires = token.ValidTo
             });
         }
     }

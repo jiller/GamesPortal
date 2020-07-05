@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 import { User } from "../model/user";
+import {ChangeUserData} from "../model/changeUserData";
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class UserService {
       }));
   }
 
-  setUserData(userData: User) {
+  setUserData(userData: ChangeUserData) {
     return this.http.put<User>(this.url, userData)
       .pipe(map(user => {
         this.currentUser.next(user);

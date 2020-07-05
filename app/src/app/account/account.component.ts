@@ -28,11 +28,11 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountForm = this.formBuilder.group({
-      email: '',
+      emailAddress: '',
       firstName: '',
       lastName: '',
       password: '',
-      passwordRepeat: ''
+      confirmPassword: ''
     });
 
     if (!this.userService.currentUserValue) {
@@ -47,6 +47,7 @@ export class AccountComponent implements OnInit {
   onSubmit(userData: any) {
     this.submitted = true;
     this.success = false;
+    this.accountError = null;
 
     if (this.accountForm.invalid) {
       return;
@@ -66,5 +67,17 @@ export class AccountComponent implements OnInit {
 
   cancel() {
     this.router.navigate(['/']);
+  }
+
+  errorIsText() {
+    return this.accountError && this.getErrorKeys().length == 0;
+  }
+
+  errorIsObject() {
+    return this.accountError && this.getErrorKeys().length > 0;
+  }
+
+  getErrorKeys() {
+    return Object.keys(this.accountError);
   }
 }

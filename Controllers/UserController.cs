@@ -1,8 +1,11 @@
 ﻿using System.Threading.Tasks;
 using AcmeGames.Domain.Users.Model;
 using AcmeGames.Domain.Users.Requests;
+using AcmeGames.Models;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 
 namespace AcmeGames.Controllers
 {
@@ -11,10 +14,12 @@ namespace AcmeGames.Controllers
     public class UserController : ProtectedController
     {
         private readonly IMediator mediator;
+        private readonly IMapper mapper;
 
-        public UserController(IMediator mediator)
+        public UserController(IMediator mediator, IMapper mapper)
         {
             this.mediator = mediator;
+            this.mapper = mapper;
         }
         
         [HttpGet]
@@ -26,13 +31,21 @@ namespace AcmeGames.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<UserDto> Post(UserDto user)
+        [HttpPut]
+        [SwaggerResponse(typeof(UserDto))]
+        public async Task<IActionResult> Post([FromBody] ChangeUserDataRequest request)
         {
-            return await mediator.Send(new UpdateUserAccountDetails
+            if (!ModelState.IsValid)
             {
-                User = user
-            });
+                return BadRequest(ModelState);
+            }
+
+            var userAccountDetails = mapper.Map<UpdateUserAccountDetails>(request);
+            userAccountDetails.UserAccountId = CurrentUser.UserAccountId;
+            
+            var updatedUser= await mediator.Send(userAccountDetails);
+
+            return Ok(updatedUser);
         }
     }
 }

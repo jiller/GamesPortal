@@ -25,10 +25,10 @@ namespace AcmeGames.Domain.Games.RequestHandlers
         
         public async Task<IEnumerable<GameDto>> Handle(GetAllUserGames request, CancellationToken cancellationToken)
         {
-            var ownedGames = await db.Get<Ownership>(o => o.UserAccountId == request.UserAccountId && o.State == OwnershipState.Owned);
+            var ownedGames = await db.GetAsync<Ownership>(o => o.UserAccountId == request.UserAccountId && o.State == OwnershipState.Owned);
 
             var gameIds = ownedGames.Select(o => o.GameId).ToArray();
-            var games = await db.Get<Game>(g => gameIds.Contains(g.GameId));
+            var games = await db.GetAsync<Game>(g => gameIds.Contains(g.GameId));
 
             return mapper.Map<IEnumerable<GameDto>>(games);
         }

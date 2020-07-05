@@ -25,7 +25,7 @@ namespace AcmeGames.Domain.Users.RequestHandlers
         
         public async Task<UserDto> Handle(GetUserByEmailAndPassword request, CancellationToken cancellationToken)
         {
-            var user = await db.GetFirstOrDefault<User>(u =>
+            var user = await db.GetFirstOrDefaultAsync<User>(u =>
                 u.EmailAddress.Equals(request.Email, StringComparison.InvariantCultureIgnoreCase) &&
                 u.Password.Equals(request.Password, StringComparison.InvariantCulture));
 

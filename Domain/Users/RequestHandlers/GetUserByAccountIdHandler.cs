@@ -25,7 +25,7 @@ namespace AcmeGames.Domain.Users.RequestHandlers
         
         public async Task<UserDto> Handle(GetUserByAccountId request, CancellationToken cancellationToken)
         {
-            var user = await db.GetFirstOrDefault<User>(u => u.UserAccountId.Equals(request.UserAccountId));
+            var user = await db.GetFirstOrDefaultAsync<User>(u => u.UserAccountId.Equals(request.UserAccountId));
             return mapper.Map<UserDto>(user);
         }
     }

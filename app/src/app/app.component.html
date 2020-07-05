@@ -5,7 +5,7 @@
   </div>
   <div class="navbar-nav">
     <a class="nav-item nav-link nav-link-black" routerLink="/account" *ngIf="currentUser">
-      Welcome, {{getUserDisplayName()}}!
+      Welcome, {{currentUser.fullName}}!
     </a>
     <a class="nav-item nav-link mr-md-2 mr-2" (click)="logout()" href="/">Logout</a>
   </div>

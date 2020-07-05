@@ -37,7 +37,7 @@ namespace AcmeGames.Data
             };
         }
 
-        public Task<IEnumerable<T>> Get<T>(Expression<Func<T, bool>> predicate)
+        public Task<IEnumerable<T>> GetAsync<T>(Expression<Func<T, bool>> predicate)
         {
             if (tables.TryGetValue(typeof(T), out var dataSource))
             {
@@ -53,12 +53,12 @@ namespace AcmeGames.Data
             throw new ArgumentOutOfRangeException($"Unknown type '{typeof(T)}'");
         }
         
-        public Task<T> GetFirstOrDefault<T>(Expression<Func<T, bool>> predicate)
+        public Task<T> GetFirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate)
         {
-            return Get(predicate).ContinueWith(src =>src.GetAwaiter().GetResult().FirstOrDefault());
+            return GetAsync(predicate).ContinueWith(src =>src.GetAwaiter().GetResult().FirstOrDefault());
         }
         
-        public Task Submit()
+        public Task SubmitAsync()
         {
             // TODO : Flush changes to the files
             return Task.CompletedTask;

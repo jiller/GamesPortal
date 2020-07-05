@@ -7,7 +7,8 @@ namespace AcmeGames.Extensions
     {
         public static IServiceCollection AddDatabase(this IServiceCollection serviceCollection)
         {
-            return serviceCollection.AddScoped<Database>();
+            // Add database here as singleton to store in-memory data across requests 
+            return serviceCollection.AddSingleton<Database>();
         }
     }
 }
