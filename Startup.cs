@@ -34,8 +34,7 @@ namespace AcmeGames
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = "localhost:56653",
                         ValidAudience = "localhost:56653",
-                        IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(signatureKey))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signatureKey))
                     };
                 });
 

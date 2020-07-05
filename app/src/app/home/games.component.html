@@ -1,0 +1,16 @@
+<div class="container mt-1" *ngIf="userAuthorized">
+  <h3>My Games</h3>
+
+  <div *ngIf="loading" class="spinner-grow spinner-border-sm text-primary">
+    <span class="sr-only">Loading ...</span>
+  </div>
+
+  <div *ngIf="games">
+    <div class="card" *ngFor="let game of games" style="width: 18rem;">
+      <img class="card-img-top" src="{{game.thumbnail}}" alt="{{game.name}}"/>
+      <div class="card-img-body text-center">
+        <h5 class="card-title">{{game.name}}</h5>
+      </div>
+    </div>
+  </div>
+</div>
