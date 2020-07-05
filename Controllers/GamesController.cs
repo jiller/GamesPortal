@@ -1,31 +1,30 @@
 ﻿using System.Collections.Generic;
-using AcmeGames.Data;
-using AcmeGames.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using AcmeGames.Domain.Games.Model;
+using AcmeGames.Domain.Games.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcmeGames.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[Produces("application/json")]
 	[Route("api/games")]
-	public class GamesController : Controller
+	public class GamesController : ProtectedController
 	{
-		[HttpGet]
-		public IEnumerable<Game>
-		GetAllGames()
+		private readonly IMediator mediator;
+
+		public GamesController(IMediator mediator)
 		{
-			return new[]
+			this.mediator = mediator;
+		}
+		
+		[HttpGet]
+		public async Task<IEnumerable<GameDto>> GetAllGames()
+		{
+			return await mediator.Send(new GetAllUserGames
 			{
-				new Game
-				{
-					AgeRestriction = 16,
-					GameId = 1,
-					Name = "Tom Clancy's Rainbow Six® Siege",
-					Thumbnail = "https://ubistatic3-a.akamaihd.net/orbit/uplay_launcher_3_0/assets/ce92dd05207a67d81bb6a3df7bf004c3.jpg"
-				}
-			};
+				UserAccountId = CurrentUser.UserAccountId
+			});
 		}
 	}
 }

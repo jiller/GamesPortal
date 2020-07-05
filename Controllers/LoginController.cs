@@ -40,7 +40,7 @@ namespace AcmeGames.Controllers
                 return BadRequest(ModelState);
             }
             
-            var user = await mediator.Send(new GetUserByEmailAndPasswordRequest
+            var user = await mediator.Send(new GetUserByEmailAndPassword
             {
                 Email = authRequest.EmailAddress,
                 Password = authRequest.Password

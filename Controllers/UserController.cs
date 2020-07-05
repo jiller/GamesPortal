@@ -1,47 +1,38 @@
-﻿using System;
-using AcmeGames.Data;
-using AcmeGames.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using AcmeGames.Domain.Users.Model;
+using AcmeGames.Domain.Users.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcmeGames.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Produces("application/json")]
     [Route("api/user")]
-    public class UserController : Controller
+    public class UserController : ProtectedController
     {
-        [HttpGet]
-        public User Get()
-        {
-            var user = new User
-            {
-                UserAccountId = "fake",
-                DateOfBirth = DateTime.Now,
-                EmailAddress = "foo@bar.baz",
-                FirstName = "Hard",
-                LastName = "Codedson",
-                IsAdmin = false
-            };
+        private readonly IMediator mediator;
 
-            return user;
+        public UserController(IMediator mediator)
+        {
+            this.mediator = mediator;
+        }
+        
+        [HttpGet]
+        public async Task<UserDto> Get()
+        {
+            return await mediator.Send(new GetUserByAccountId
+            {
+                UserAccountId = CurrentUser.UserAccountId
+            });
         }
 
         [HttpPost]
-        public User Post(User user)
+        public async Task<UserDto> Post(UserDto user)
         {
-            var u = new User
+            return await mediator.Send(new UpdateUserAccountDetails
             {
-                UserAccountId = "fake",
-                DateOfBirth = DateTime.Now,
-                EmailAddress = "foo@bar.baz",
-                FirstName = "Hard",
-                LastName = "Codedson",
-                IsAdmin = false
-            };
-
-            return u;
+                User = user
+            });
         }
     }
 }
