@@ -35,7 +35,7 @@ namespace AcmeGames.Controllers
         [HttpPost]
         public async Task<IActionResult> Authenticate([FromBody] AuthRequest  authRequest)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }

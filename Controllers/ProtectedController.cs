@@ -13,13 +13,19 @@ namespace AcmeGames.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public abstract class ProtectedController : Controller
     {
-        private readonly UserDto currentUser;
+        private UserDto currentUser;
 
-        public ProtectedController()
+        protected ProtectedController()
+        {
+        }
+
+        public UserDto CurrentUser => currentUser ?? (currentUser = ParseUserClaims());
+        
+        private UserDto ParseUserClaims()
         {
             var claims = User.Claims.ToDictionary(c => c.Type, c => c.Value);
-            
-            currentUser = new UserDto
+
+            return new UserDto
             {
                 UserAccountId = claims.GetValueOrDefault(ClaimTypes.NameIdentifier),
                 FirstName = claims.GetValueOrDefault(ClaimTypes.GivenName),
@@ -29,7 +35,5 @@ namespace AcmeGames.Controllers
                 DateOfBirth = DateTime.ParseExact(claims.GetValueOrDefault(ClaimTypes.DateOfBirth), "yyyy-MM-dd", CultureInfo.InvariantCulture)
             };
         }
-        
-        public UserDto CurrentUser => currentUser;
     }
 }

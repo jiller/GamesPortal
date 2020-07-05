@@ -38,7 +38,7 @@ namespace AcmeGames
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signatureKey))
                     };
                 });
-            
+
             aServiceCollection.AddMediatR(AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.GetName().Name.StartsWith("AcmeGames"))
                 .ToArray());
@@ -52,10 +52,7 @@ namespace AcmeGames
                 };
             });
 
-            aServiceCollection.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(ExceptionFilter), 0);
-            });
+            aServiceCollection.AddMvc(options => { options.Filters.Add(typeof(ExceptionFilter), 0); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,12 +67,9 @@ namespace AcmeGames
                 .UseDefaultFiles()
                 .UseStaticFiles()
                 .UseMvc();
-            
+
             aApplicationBuilder.UseOpenApi();
-            aApplicationBuilder.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcmeGames API");
-            });
+            aApplicationBuilder.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "AcmeGames API"); });
         }
     }
 }
