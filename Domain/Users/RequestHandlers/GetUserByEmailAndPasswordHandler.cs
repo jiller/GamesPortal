@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AcmeGames.Data;
 using AcmeGames.Domain.Users.Model;
 using AcmeGames.Domain.Users.Requests;
+using AutoMapper;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -11,23 +14,22 @@ namespace AcmeGames.Domain.Users.RequestHandlers
     [UsedImplicitly]
     public class GetUserByEmailAndPasswordHandler: IRequestHandler<GetUserByEmailAndPassword, UserDto>
     {
-        public GetUserByEmailAndPasswordHandler()
+        private readonly Database db;
+        private readonly IMapper mapper;
+
+        public GetUserByEmailAndPasswordHandler(Database db, IMapper mapper)
         {
-            
+            this.db = db;
+            this.mapper = mapper;
         }
         
         public async Task<UserDto> Handle(GetUserByEmailAndPassword request, CancellationToken cancellationToken)
         {
-            // TODO: Implement retrieving user from database 
-            return new UserDto
-            {
-                UserAccountId = "fake",
-                DateOfBirth = DateTime.Now,
-                EmailAddress = "foo@bar.baz",
-                FirstName = "Hard",
-                LastName = "Codedson",
-                IsAdmin = false
-            };
+            var user = await db.GetFirstOrDefault<User>(u =>
+                u.EmailAddress.Equals(request.Email, StringComparison.InvariantCultureIgnoreCase) &&
+                u.Password.Equals(request.Password, StringComparison.InvariantCulture));
+
+            return mapper.Map<UserDto>(user);
         }
     }
 }

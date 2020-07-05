@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AcmeGames.Extensions;
 using AcmeGames.Filters;
 using AutoMapper;
 using MediatR;
@@ -42,6 +43,7 @@ namespace AcmeGames
                 });
 
             aServiceCollection.AddAutoMapper(Assembly.GetExecutingAssembly());
+            aServiceCollection.AddDatabase();
             
             aServiceCollection.AddMediatR(AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.GetName().Name.StartsWith("AcmeGames"))

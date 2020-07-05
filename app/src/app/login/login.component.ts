@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(loginData: any) {
     this.submitted = true;
+    this.loginError = "";
 
     if (this.loginForm.invalid) {
       return;

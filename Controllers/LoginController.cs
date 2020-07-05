@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AcmeGames.Domain.Users.Requests;
+using AcmeGames.Filters;
 using AcmeGames.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +49,7 @@ namespace AcmeGames.Controllers
 
             if (user == null)
             {
-                return BadRequest("Invalid email address or password.");
+                return UnprocessableEntity(new ApiError("Invalid email address or password"));
             }
 
             var claims = new[]

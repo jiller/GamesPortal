@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AcmeGames.Data;
 using AcmeGames.Domain.Games.Model;
 using AcmeGames.Domain.Games.Requests;
+using AutoMapper;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -11,19 +14,23 @@ namespace AcmeGames.Domain.Games.RequestHandlers
     [UsedImplicitly]
     public class GetAllUserGamesHandler: IRequestHandler<GetAllUserGames, IEnumerable<GameDto>>
     {
+        private readonly Database db;
+        private readonly IMapper mapper;
+
+        public GetAllUserGamesHandler(Database db, IMapper mapper)
+        {
+            this.db = db;
+            this.mapper = mapper;
+        }
+        
         public async Task<IEnumerable<GameDto>> Handle(GetAllUserGames request, CancellationToken cancellationToken)
         {
-            // TODO: Implement retrieveing games from database
-            return new[]
-            {
-                new GameDto
-                {
-                    AgeRestriction = 16,
-                    GameId = 1,
-                    Name = "Tom Clancy's Rainbow Six® Siege",
-                    Thumbnail = "https://ubistatic3-a.akamaihd.net/orbit/uplay_launcher_3_0/assets/ce92dd05207a67d81bb6a3df7bf004c3.jpg"
-                }
-            };
+            var ownedGames = await db.Get<Ownership>(o => o.UserAccountId == request.UserAccountId && o.State == OwnershipState.Owned);
+
+            var gameIds = ownedGames.Select(o => o.GameId).ToArray();
+            var games = await db.Get<Game>(g => gameIds.Contains(g.GameId));
+
+            return mapper.Map<IEnumerable<GameDto>>(games);
         }
     }
 }

@@ -6,10 +6,12 @@
   </div>
 
   <div *ngIf="games">
-    <div class="card" *ngFor="let game of games" style="width: 18rem;">
-      <img class="card-img-top" src="{{game.thumbnail}}" alt="{{game.name}}"/>
-      <div class="card-img-body text-center">
-        <h5 class="card-title">{{game.name}}</h5>
+    <div class="card-columns">
+      <div class="card border-dark" *ngFor="let game of games" style="width: 18rem;">
+        <img class="card-img-top" src="{{game.thumbnail}}" alt="{{game.name}}"/>
+        <div class="card-img-body text-center">
+          <h5 class="card-title">{{game.name}}</h5>
+        </div>
       </div>
     </div>
   </div>

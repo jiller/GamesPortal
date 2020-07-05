@@ -36,20 +36,26 @@ namespace AcmeGames.Data
                 {typeof(User), locUsers}
             };
         }
-        
-        public Task<IEnumerable<Game>> Games => PrivGetData(locGames);
-        public Task<IEnumerable<GameKey>> GameKeys => PrivGetData(locKeys);
-        public Task<IEnumerable<Ownership>> Ownerships => PrivGetData(locOwnership);
-        public Task<IEnumerable<User>> Users => PrivGetData(locUsers);
 
         public Task<IEnumerable<T>> Get<T>(Expression<Func<T, bool>> predicate)
         {
             if (tables.TryGetValue(typeof(T), out var dataSource))
             {
-                return PrivGetData(dataSource.OfType<T>().Where(predicate.Compile()));
+                var typedDs = dataSource.OfType<T>();
+                if (predicate != null)
+                {
+                    typedDs = typedDs.Where(predicate.Compile());
+                }
+                
+                return PrivGetData(typedDs);
             }
             
             throw new ArgumentOutOfRangeException($"Unknown type '{typeof(T)}'");
+        }
+        
+        public Task<T> GetFirstOrDefault<T>(Expression<Func<T, bool>> predicate)
+        {
+            return Get(predicate).ContinueWith(src =>src.GetAwaiter().GetResult().FirstOrDefault());
         }
         
         public Task Submit()

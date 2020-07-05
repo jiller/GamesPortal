@@ -18,7 +18,7 @@
           <label for="email" class="col-sm-4 col-form-label">Email</label>
           <div class="col-sm-8">
             <input id="email" type="email" class="form-control" placeholder="Your Email *" formControlName="email"
-                   required="required" maxlength="50"
+                   required="required" maxlength="50" autocomplete="no"
                    [ngModel]="currentUser.emailAddress"
                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
             <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
@@ -60,7 +60,7 @@
           <label for="password" class="col-sm-4 col-form-label">Password</label>
           <div class="col-sm-8">
             <input id="password" type="password" class="form-control" placeholder="Your Password" value=""
-                   formControlName="password"
+                   formControlName="password" autocomplete="new-password"
                    minlength="3" maxlength="20"
                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
             <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
@@ -74,7 +74,7 @@
           <label for="passwordRepeat" class="col-sm-4 col-form-label">Repeat Password</label>
           <div class="col-sm-8">
             <input id="passwordRepeat" type="password" class="form-control" placeholder="Your Password Again" value=""
-                   formControlName="passwordRepeat"
+                   formControlName="passwordRepeat" autocomplete="new-password"
                    minlength="3" maxlength="20"
                    [ngClass]="{ 'is-invalid': submitted && f.passwordRepeat.errors }"/>
             <div>
