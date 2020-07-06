@@ -1,6 +1,6 @@
-﻿using AcmeGames.Domain.Users.Model;
+﻿using AcmeGames.Controllers.Requests;
+using AcmeGames.Domain.Users.Model;
 using AcmeGames.Domain.Users.Requests;
-using AcmeGames.Models;
 using AutoMapper;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis.Options;

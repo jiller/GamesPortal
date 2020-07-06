@@ -1,5 +1,5 @@
-﻿using AcmeGames.Domain.Games.Requests;
-using AcmeGames.Models;
+﻿using AcmeGames.Controllers.Requests;
+using AcmeGames.Domain.Games.Requests;
 using AutoMapper;
 using JetBrains.Annotations;
 

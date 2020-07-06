@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AcmeGames.Models
+namespace AcmeGames.Controllers.Responses
 {
     public class TokenResponse
     {

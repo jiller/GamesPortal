@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
+using AcmeGames.Controllers.Requests;
 using AcmeGames.Domain.Users.Model;
 using AcmeGames.Domain.Users.Requests;
-using AcmeGames.Models;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +33,7 @@ namespace AcmeGames.Controllers
 
         [HttpPut]
         [SwaggerResponse(typeof(UserDto))]
-        public async Task<IActionResult> Post([FromBody] ChangeUserDataRequest request)
+        public async Task<IActionResult> Put([FromBody] ChangeUserDataRequest request)
         {
             if (!ModelState.IsValid)
             {

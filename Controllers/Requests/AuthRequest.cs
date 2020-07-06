@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AcmeGames.Models
+namespace AcmeGames.Controllers.Requests
 {
     public class AuthRequest
     {

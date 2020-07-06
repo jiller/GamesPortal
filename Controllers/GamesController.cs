@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AcmeGames.Controllers.Requests;
 using AcmeGames.Domain.Games.Model;
 using AcmeGames.Domain.Games.Requests;
-using AcmeGames.Models;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +39,10 @@ namespace AcmeGames.Controllers
 				return BadRequest(ModelState);
 			}
 
-			await mediator.Send(mapper.Map<RedeemGameKey>(request));
+			var data = mapper.Map<RedeemGameKey>(request);
+			data.UserAccountId = CurrentUser.UserAccountId;
+			
+			await mediator.Send(data);
 			return Ok();
 		}
 	}
