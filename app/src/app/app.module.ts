@@ -10,7 +10,7 @@ import { appRoutingModule } from "./app.routing";
 import { JwtInterceptor } from "./helpers/jwt.interceptor";
 import { ErrorInterceptor } from "./helpers/error.interceptor";
 import { LoginComponent } from './login/login.component';
-import { GamesComponent } from './home/games.component';
+import { GamesComponent } from './game/games.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccountComponent } from './account/account.component';

@@ -21,7 +21,7 @@ namespace AcmeGames.Models
         public string Password { get; set; }
         
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Password and Confirm Password don't match")]
+        [Compare("Password", ErrorMessage = "Password and Confirm Password must be match")]
         public string ConfirmPassword { get; set; }
     }
 }

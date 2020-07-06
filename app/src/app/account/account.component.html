@@ -71,7 +71,7 @@
 
         <!-- Password repeat -->
         <div class="form-group row">
-          <label for="confirmPassword" class="col-sm-4 col-form-label">Repeat Password</label>
+          <label for="confirmPassword" class="col-sm-4 col-form-label">Confirm Password</label>
           <div class="col-sm-8">
             <input id="confirmPassword" type="password" class="form-control" placeholder="Your Password Again" value=""
                    formControlName="confirmPassword" autocomplete="new-password"
@@ -81,7 +81,8 @@
               <span class="text-info small">If do not want to change your password, please leave password field empty.</span>
             </div>
             <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
-              <div *ngIf="f.confirmPassword.errors.required">Repeat Password is required</div>
+              <div *ngIf="f.confirmPassword.errors.required">Confirm Password is required</div>
+              <div *ngIf="f.confirmPassword.errors.confirmedValidator">Password and Confirm Password must be match</div>
             </div>
           </div>
         </div>

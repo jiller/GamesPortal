@@ -4,6 +4,7 @@ import { User } from "../model/user";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {Router} from "@angular/router";
 import {first} from "rxjs/operators";
+import {ConfirmedValidator} from "../validators/confirmedValidator";
 
 @Component({
   templateUrl: './account.component.html',
@@ -33,6 +34,8 @@ export class AccountComponent implements OnInit {
       lastName: '',
       password: '',
       confirmPassword: ''
+    }, {
+      validators: ConfirmedValidator("password", "confirmPassword")
     });
 
     if (!this.userService.currentUserValue) {
