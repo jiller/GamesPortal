@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from "../services/user.service";
-import { GamesService } from "../services/games.service";
 
-import { Game } from "../model/game";
-import {AuthService} from "../services/auth.service";
+import { UserService } from "../../services/user.service";
+import { GamesService } from "../../services/games.service";
+import { AuthService } from "../../services/auth.service";
+
+import { Game } from "../../model/game";
 
 @Component({
   templateUrl: './games.component.html',

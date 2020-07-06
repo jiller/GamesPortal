@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from "../services/user.service";
-import { User } from "../model/user";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import {Router} from "@angular/router";
-import {first} from "rxjs/operators";
-import {ConfirmedValidator} from "../validators/confirmedValidator";
+import { Router } from "@angular/router";
+import { first } from "rxjs/operators";
+
+import { UserService } from "../../services/user.service";
+import { ConfirmedValidator } from "../../validators/confirmedValidator";
+
+import { User } from "../../model/user";
 
 @Component({
   templateUrl: './account.component.html',

@@ -49,6 +49,11 @@ namespace AcmeGames.Data
 
                 if (pageNumber.HasValue)
                 {
+                    if (limit == 0)
+                    {
+                        limit = 100;
+                    }
+                    
                     typedDs = typedDs.Skip(pageNumber.Value * limit).Take(limit);
                 }
                 

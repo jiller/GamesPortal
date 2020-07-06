@@ -12,6 +12,7 @@ import {ChangeUserData} from "../model/changeUserData";
 })
 export class UserService {
   private url: string;
+  private adminUrl: string;
 
   public currentUser: BehaviorSubject<User>;
 
@@ -19,6 +20,10 @@ export class UserService {
     this.url = (environment.api_url.endsWith("/")
       ? environment.api_url
       : environment.api_url + "/") + "api/user";
+
+    this.adminUrl = (environment.api_url.endsWith("/")
+      ? environment.api_url
+      : environment.api_url + "/") + "api/admin/user";
 
     this.currentUser = new BehaviorSubject<User>(null);
   }
@@ -41,5 +46,9 @@ export class UserService {
         this.currentUser.next(user);
         return user;
       }));
+  }
+
+  getAll() {
+    return this.http.post<User[]>(this.adminUrl + '/search', {});
   }
 }
