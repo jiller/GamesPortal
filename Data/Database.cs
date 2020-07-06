@@ -58,9 +58,24 @@ namespace AcmeGames.Data
             return GetAsync(predicate).ContinueWith(src =>src.GetAwaiter().GetResult().FirstOrDefault());
         }
         
+        public void Add<T>(T entity)
+        {
+            if (tables.TryGetValue(typeof(T), out var dataSource))
+            {
+                ((List<T>) dataSource).Add(entity);
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException($"Unknown type '{typeof(T)}'");
+            }
+        }
+        
         public Task SubmitAsync()
         {
             // TODO : Flush changes to the files
+            var delay = locRandom.Next(150, 1000);
+            Thread.Sleep(TimeSpan.FromMilliseconds(delay));
+            
             return Task.CompletedTask;
         }
         
