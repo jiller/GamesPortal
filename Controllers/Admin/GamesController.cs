@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AcmeGames.Domain.Games.Model;
+using AcmeGames.Domain.Games.RequestHandlers;
 using AcmeGames.Domain.Games.Requests;
 using AutoMapper;
 using MediatR;
@@ -25,36 +26,51 @@ namespace AcmeGames.Controllers.Admin
         [HttpGet]
         public async Task<IEnumerable<GameDto>> GetAll()
         {
-            throw new NotImplementedException();
+            return await mediator.Send(new GetAllGames());
         }
 
         [HttpGet]
         [Route("user/{userAccountId}")]
-        public async Task<IEnumerable<GameDto>> GetAllUserGames(string userAccountId)
+        public async Task<IEnumerable<GameDto>> GetAllUserGames([Required] string userAccountId)
         {
-            throw new NotImplementedException();
+            return await mediator.Send(new GetAllUserGames
+            {
+                UserAccountId = userAccountId
+            });
         }
         
-        [HttpPost("user/{userAccountId}/key/{gameKey}")]
-        public async Task<IActionResult> RedeemKey([FromQuery] string userAccountId, [FromQuery] string gameKey)
+        [HttpPost("user/{userAccountId}/game/{gameId}")]
+        public async Task<IActionResult> GrantOwnership([FromQuery, Required] string userAccountId, [FromQuery, Required] uint gameId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            await mediator.Send(new GrantGameOwnershipToUser
+            {
+                UserAccountId = userAccountId,
+                GameId = gameId
+            });
+            
+            return Ok();
+        }
+
+        [HttpDelete("user/{userAccountId}/game/{gameId}")]
+        public async Task<IActionResult> RevokeOwnership([Required] string userAccountId, [Required] uint gameId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await mediator.Send(new RedeemGameKey
+            await mediator.Send(new RevokeGameOwnershipFromUser
             {
-                GameKey = gameKey,
-                UserAccountId = userAccountId
+                UserAccountId = userAccountId,
+                GameId = gameId
             });
-            return Ok();
-        }
 
-        [HttpPost("user/{userAccountId}/game/{gameId}")]
-        public async Task<IActionResult> Delete(string userAccountId, uint gameId)
-        {
-            throw new NotImplementedException();
+            return Ok();
         }
     }
 }

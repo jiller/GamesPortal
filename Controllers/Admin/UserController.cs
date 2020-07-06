@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AcmeGames.Controllers.Requests;
+using AcmeGames.Controllers.Admin.Requests;
 using AcmeGames.Domain.Users.Model;
+using AcmeGames.Domain.Users.Requests;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,30 +23,36 @@ namespace AcmeGames.Controllers.Admin
         }
         
         [HttpGet]
-        public async Task<IEnumerable<UserDto>> Get()
-        {
-            throw new NotImplementedException();
-        }
-        
-        [HttpGet]
         [Route("{userAccountId}")]
-        public async Task<IEnumerable<UserDto>> GetByAccountId(string userAccountId)
+        public async Task<UserDto> GetByAccountId(string userAccountId)
         {
-            throw new NotImplementedException();
+            return await mediator.Send(new GetUserByAccountId
+            {
+                UserAccountId = userAccountId
+            });
         }
 
         [HttpPost]
         [Route("search")]
-        public async Task<IEnumerable<UserDto>> Search()
+        public async Task<IEnumerable<UserDto>> Search([FromBody] SearchUsersRequest request)
         {
-            throw new NotImplementedException();
+            return await mediator.Send(mapper.Map<SearchUsers>(request));
         }
         
         [HttpPut]
         [Route("{userAccountId}")]
-        public async Task<IActionResult> Put([FromQuery] string userAccountId, [FromBody] ChangeUserDataRequest request)
+        public async Task<IActionResult> Put([FromQuery] string userAccountId, [FromBody] ChangeUserDataByAdminRequest request)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var accountDetails = mapper.Map<UpdateUserAccountDetailsByAdmin>(request);
+            accountDetails.UserAccountId = userAccountId;
+
+            await mediator.Send(accountDetails);
+            return Ok();
         }
     }
 }

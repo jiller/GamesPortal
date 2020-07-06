@@ -37,7 +37,7 @@ namespace AcmeGames.Data
             };
         }
 
-        public Task<IEnumerable<T>> GetAsync<T>(Expression<Func<T, bool>> predicate)
+        public Task<IEnumerable<T>> GetAsync<T>(Expression<Func<T, bool>> predicate = null, int? pageNumber = null, int limit = 100)
         {
             if (tables.TryGetValue(typeof(T), out var dataSource))
             {
@@ -45,6 +45,11 @@ namespace AcmeGames.Data
                 if (predicate != null)
                 {
                     typedDs = typedDs.Where(predicate.Compile());
+                }
+
+                if (pageNumber.HasValue)
+                {
+                    typedDs = typedDs.Skip(pageNumber.Value * limit).Take(limit);
                 }
                 
                 return PrivGetData(typedDs);

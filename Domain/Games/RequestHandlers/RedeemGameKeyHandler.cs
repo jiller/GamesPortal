@@ -48,7 +48,7 @@ namespace AcmeGames.Domain.Games.RequestHandlers
             // Grant game ownership to the user
             var ownership = new Ownership
             {
-                OwnershipId = 0,
+                OwnershipId = 0, // Let database generate OwnershipId
                 State = OwnershipState.Owned,
                 GameId = game.GameId,
                 RegisteredDate = DateTime.UtcNow.ToString("yyyy-MM-dd"),
