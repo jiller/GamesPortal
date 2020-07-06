@@ -9,11 +9,11 @@ import { appRoutingModule } from "./app.routing";
 
 import { JwtInterceptor } from "./helpers/jwt.interceptor";
 import { ErrorInterceptor } from "./helpers/error.interceptor";
-import { LoginComponent } from './login/login.component';
-import { GamesComponent } from './game/games.component';
+import { LoginComponent } from './components/login/login.component';
+import { GamesComponent } from './components/game/games.component';
+import { AccountComponent } from './components/account/account.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AccountComponent } from './account/account.component';
 
 @NgModule({
   declarations: [

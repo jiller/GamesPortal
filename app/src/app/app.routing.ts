@@ -1,9 +1,9 @@
 ﻿import { Routes, RouterModule } from '@angular/router';
 
-import { GamesComponent } from './game/games.component';
-import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './helpers/auth.guard';
-import {AccountComponent} from "./account/account.component";
+import { GamesComponent } from './components/game/games.component';
+import { LoginComponent } from './components/login/login.component';
+import { AccountComponent } from "./components/account/account.component";
 
 const routes: Routes = [
   { path: '', component: GamesComponent, canActivate: [AuthGuard] },
