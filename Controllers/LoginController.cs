@@ -63,7 +63,7 @@ namespace AcmeGames.Controllers
                 new Claim(ClaimTypes.Surname,           user.LastName), 
                 new Claim(ClaimTypes.DateOfBirth,       user.DateOfBirth.ToString("yyyy-MM-dd")),
                 new Claim(ClaimTypes.Email,             user.EmailAddress),
-                new Claim(ClaimTypes.Role,              user.IsAdmin ? "Admin" : "User")
+                new Claim(ClaimTypes.Role,              user.Role)
             };
 
             var token = new JwtSecurityToken(

@@ -10,7 +10,8 @@ namespace AcmeGames.Domain.Users.Mapping
     {
         public UserProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>()
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(x => x.IsAdmin ? "Admin" : "User"));
         }
     }
 }

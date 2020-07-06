@@ -6,5 +6,7 @@
   firstName: string;
   lastName: string;
   fullName: string;
+  role: string;
+  isAdmin: boolean;
   token?: string;
 }

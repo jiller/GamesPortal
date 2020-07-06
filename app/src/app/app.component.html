@@ -2,6 +2,7 @@
   <div class="navbar-nav">
     <a class="nav-item nav-link" routerLink="/">My Games</a>
     <a class="nav-item nav-link" routerLink="/account">Account</a>
+    <a *ngIf="currentUser && currentUser.isAdmin" class="nav-item nav-link" routerLink="/admin">Administration</a>
   </div>
   <div class="navbar-nav">
     <a class="nav-item nav-link nav-link-black" routerLink="/account" *ngIf="currentUser">
